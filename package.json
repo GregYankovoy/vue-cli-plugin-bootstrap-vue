@@ -1,0 +1,29 @@
+{
+  "name": "vue-cli-plugin-bootstrap-vue",
+  "version": "0.1.0",
+  "description": "vue-cli 3 plugin to add Bootstrap-Vue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GregYankovoy/vue-cli-plugin-bootstrap-vue.git"
+  },
+  "keywords": [
+    "bootstrap",
+    "plugin",
+    "vue",
+    "cli",
+    "3"
+  ],
+  "author": "Greg Yankovoy (greg.yankovoy@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GregYankovoy/vue-cli-plugin-bootstrap-vue/issues"
+  },
+  "homepage": "https://github.com/GregYankovoy/vue-cli-plugin-bootstrap-vue#readme",
+  "devDependencies": {
+    "@vue/cli-service": "^3.0.0-beta.15"
+  }
+}
