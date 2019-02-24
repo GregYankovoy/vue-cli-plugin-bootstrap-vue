@@ -3,14 +3,14 @@ module.exports = (api, opts, rootOpts) => {
 
   api.extendPackage({
     dependencies: {
-      'bootstrap-vue': '^2.0.0-rc.11'
+      'bootstrap-vue': '^2.0.0-rc.13'
     }
   })
 
   if (opts.usePolyfill) {
     api.extendPackage({
       devDependencies: {
-        '@babel/polyfill': '^7.0.0-beta.53',
+        '@babel/polyfill': '^7.2.5',
       }
     })
   }
