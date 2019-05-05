@@ -11,9 +11,17 @@
     "url": "git+https://github.com/GregYankovoy/vue-cli-plugin-bootstrap-vue.git"
   },
   "keywords": [
+    "bootstrap-vue",
+    "bootstrap vue",
+    "BootstrapVue",
+    "vue bootstrap",
     "bootstrap",
+    "bootstrap v4",
+    "bootstrap 4",
     "plugin",
     "vue",
+    "vue-cli",
+    "vue-cli-3",
     "cli",
     "3"
   ],
