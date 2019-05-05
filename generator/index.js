@@ -3,6 +3,9 @@ module.exports = (api, opts, rootOpts) => {
 
   api.extendPackage({
     dependencies: {
+      'bootstrap': '^4.3.1',
+      'popper.js': '^1.15.0',
+      'portal-vue': '^2.1.4',
       'bootstrap-vue': '@latest'
     }
   })
