@@ -18,6 +18,7 @@ module.exports = (api, opts, rootOpts) => {
     api.extendPackage({
       devDependencies: {
         '@babel/polyfill': '^7.4.4',
+        'mutationobserver-shim': '^0.3.3'
       }
     })
   }
@@ -63,10 +64,12 @@ module.exports = (api, opts, rootOpts) => {
       })
 
       helpers.updateMain(src => {
-        if (!src.find(l => l.match(/^(import|require).*@babel\/polyfill.*$/))) {
+        if (!src.find(l => l.match(/^(import|require).+mutationobserver-shim.*$/))) {
+          src.unshift('import \'mutationobserver-shim\'')
+        }
+        if (!src.find(l => l.match(/^(import|require).+@babel\/polyfill.*$/))) {
           src.unshift('import \'@babel/polyfill\'')
         }
-
         return src
       })
     }
