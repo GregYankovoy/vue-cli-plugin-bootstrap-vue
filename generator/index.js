@@ -3,7 +3,7 @@ module.exports = (api, opts, rootOpts) => {
 
   api.extendPackage({
     dependencies: {
-      'bootstrap-vue': '@latest'
+      'bootstrap-vue': '^2.0.0-rc.19'
     },
     devDependencies: {
       bootstrap: '^4.3.1',
