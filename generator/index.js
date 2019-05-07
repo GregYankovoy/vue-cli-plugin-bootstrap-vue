@@ -6,7 +6,7 @@ module.exports = (api, opts, rootOpts) => {
       'bootstrap-vue': '^2.0.0-rc.19'
     },
     devDependencies: {
-      bootstrap: '^4.3.1',
+      'bootstrap': '^4.3.1',
       'popper.js': '^1.15.0',
       'portal-vue': '^2.1.4',
       'sass-loader': '^7.1.0',
