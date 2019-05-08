@@ -4,6 +4,13 @@ module.exports = (api, opts, rootOpts) => {
   api.extendPackage({
     dependencies: {
       'bootstrap-vue': '^2.0.0-rc.19'
+    },
+    devDependencies: {
+      'bootstrap': '^4.3.1',
+      'popper.js': '^1.15.0',
+      'portal-vue': '^2.1.4',
+      'sass-loader': '^7.1.0',
+      'node-sass': '^4.12.0'
     }
   })
 
@@ -11,6 +18,7 @@ module.exports = (api, opts, rootOpts) => {
     api.extendPackage({
       devDependencies: {
         '@babel/polyfill': '^7.4.4',
+        'mutationobserver-shim': '^0.3.3'
       }
     })
   }
@@ -56,10 +64,12 @@ module.exports = (api, opts, rootOpts) => {
       })
 
       helpers.updateMain(src => {
-        if (!src.find(l => l.match(/^(import|require).*@babel\/polyfill.*$/))) {
+        if (!src.find(l => l.match(/^(import|require).+mutationobserver-shim.*$/))) {
+          src.unshift('import \'mutationobserver-shim\'')
+        }
+        if (!src.find(l => l.match(/^(import|require).+@babel\/polyfill.*$/))) {
           src.unshift('import \'@babel/polyfill\'')
         }
-
         return src
       })
     }
