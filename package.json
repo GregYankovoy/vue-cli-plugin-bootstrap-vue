@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-bootstrap-vue",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "vue-cli 3 plugin to add Bootstrap-Vue",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,6 @@
   },
   "homepage": "https://github.com/GregYankovoy/vue-cli-plugin-bootstrap-vue#readme",
   "devDependencies": {
-    "@vue/cli-service": "^3.7.0"
+    "@vue/cli-service": "^3.12.1"
   }
 }
