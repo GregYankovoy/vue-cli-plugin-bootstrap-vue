@@ -3,21 +3,21 @@ module.exports = (api, opts, rootOpts) => {
 
   api.extendPackage({
     dependencies: {
-      'bootstrap-vue': '^2.0.4'
+      'bootstrap-vue': '^2.1.0'
     },
     devDependencies: {
       'bootstrap': '^4.3.1',
-      'popper.js': '^1.15.0',
-      'portal-vue': '^2.1.4',
-      'sass-loader': '^7.1.0',
-      'node-sass': '^4.12.0'
+      'popper.js': '^1.16.0',
+      'portal-vue': '^2.1.6',
+      'sass': '^1.19.0',
+      'sass-loader': '^8.0.0',
     }
   })
 
   if (opts.usePolyfill) {
     api.extendPackage({
       devDependencies: {
-        '@babel/polyfill': '^7.6.0',
+        '@babel/polyfill': '^7.7.0',
         'mutationobserver-shim': '^0.3.3'
       }
     })
