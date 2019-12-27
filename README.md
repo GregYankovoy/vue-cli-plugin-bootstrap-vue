@@ -1,12 +1,12 @@
 # vue-cli-plugin-bootstrap-vue
 
-Bootstrap-Vue Plugin for [vue-cli@3.0](https://github.com/vuejs/vue-cli)
+Bootstrap-Vue Plugin for [vue-cli](https://github.com/vuejs/vue-cli)
 
 ## Install
 
-If you haven't yet installed vue-cli 3, first follow the install instructions here: https://github.com/vuejs/vue-cli
+If you haven't yet installed vue-cli, first follow the install instructions here: https://github.com/vuejs/vue-cli
 
-Generate a project using vue-cli 3.0
+Generate a project using vue-cli
 ```
 vue create my-app
 ```

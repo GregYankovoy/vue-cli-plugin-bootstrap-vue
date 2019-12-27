@@ -1,7 +1,7 @@
 {
   "name": "vue-cli-plugin-bootstrap-vue",
   "version": "0.6.0",
-  "description": "vue-cli 3 plugin to add Bootstrap-Vue",
+  "description": "vue-cli plugin to add Bootstrap-Vue",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,8 +22,8 @@
     "vue",
     "vue-cli",
     "vue-cli-3",
-    "cli",
-    "3"
+    "vue-cli-4",
+    "cli"
   ],
   "author": "Greg Yankovoy (greg.yankovoy@gmail.com)",
   "license": "MIT",
