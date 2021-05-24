@@ -16,7 +16,7 @@ module.exports = (api, opts, rootOpts) => {
 
   if (opts.usePolyfill) {
     api.extendPackage({
-      devDependencies: {
+      dependencies: {
         '@babel/polyfill': '^7.11.5',
         'mutationobserver-shim': '^0.3.7'
       }
