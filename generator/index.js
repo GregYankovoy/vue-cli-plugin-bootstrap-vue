@@ -24,9 +24,9 @@ module.exports = (api, opts, rootOpts) => {
   }
 
   // Render bootstrap-vue plugin file
-  api.render({
-    './src/plugins/bootstrap-vue.js': './templates/default/src/plugins/bootstrap-vue.js'
-  }, opts)
+  const templateName = opts.useScss ? 'scss' : 'default'
+  api.render(`./templates/${templateName}`)
+
 
   // adapted from https://github.com/Akryum/vue-cli-plugin-apollo/blob/master/generator/index.js#L68-L91
   api.onCreateComplete(() => {
@@ -38,6 +38,43 @@ module.exports = (api, opts, rootOpts) => {
 
       return src
     })
+
+    if(opts.useScss){
+      //Add bootstrap's variables globally
+      const bootstrapVueVarImports = [
+        '@import "~@/assets/scss/vendors/bootstrap-vue/_custom.scss"',
+        '@import "~bootstrap/scss/_functions.scss"',
+        '@import "~bootstrap/scss/_variables.scss"',
+        '@import "~bootstrap/scss/_mixins.scss"',
+        '@import "~bootstrap-vue/src/_variables.scss"',
+      ]
+      
+      //add custom variables 
+      api.chainWebpack(webpackConfig => {
+        webpackConfig
+          .module.rule('scss')
+          .use('sass-loader')
+          .options({
+            prependData: bootstrapVueVarImports.join(';\n')
+          })
+      })
+
+      //Modify App.vue (import bootstrap styles)
+      helpers.updateApp(src => {
+        let styleBlockIndex = src.findIndex(line => line.match(/^<style>/))
+
+        if(styleBlock === -1){
+          src.push(`<style lang="scss">`)
+          src.push(`</style>`)
+
+          styleBlockIndex = src.length - 2
+        }
+
+        const bootstrapImportString = `@import "~@/assets/scss/vendors/bootstrap-vue/index";`
+        src.splice(styleBlockIndex + 1, 0, bootstrapImportString)
+      })
+    }
+    
 
     // Add polyfill
     if (opts.usePolyfill) {

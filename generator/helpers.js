@@ -53,6 +53,18 @@ module.exports = function (api) {
 
       content = lines.join('\n')
       fs.writeFileSync(mainPath, content, { encoding: 'utf8' })
+    },
+
+    //TODO: refactor since is equal to updateMain
+    updateApp(callback){
+      const appPath = api.resolve('./src/App.vue')
+
+      let content = fs.readFileSync(appPath, { encoding: 'utf8' })
+      let lines = content.split(/\r?\n/g)
+        lines = callback(lines)
+
+      content = lines.join('\n')
+      fs.writeFileSync(appPath, content, { encoding: 'utf8' })
     }
   }
 }
