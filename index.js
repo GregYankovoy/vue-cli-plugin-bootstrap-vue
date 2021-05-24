@@ -27,26 +27,25 @@ module.exports = (api, opts) => {
           }
         }
       })
-
-      if(opts.useScss){
-        //Add bootstrap's variables globally
-        const bootstrapVueVarImports = [
-          '@import "~bootstrap/scss/_functions.scss"',
-          '@import "~@/assets/scss/vendors/bootstrap-vue/_custom.scss"',
-          '@import "~bootstrap/scss/_variables.scss"',
-          '@import "~bootstrap/scss/_mixins.scss"',
-          '@import "~bootstrap-vue/src/_variables.scss"',
-        ]
-        
-        //add custom variables 
-        api.chainWebpack(webpackConfig => {
-          webpackConfig
-            .module.rule('scss')
-            .use('sass-loader')
-            .options({
-              prependData: bootstrapVueVarImports.join(';\n')
-            })
-        })
-      }     
   })
+
+  //Add bootstrap's variables globally
+      const bootstrapVueVarImports = [
+        '@import "~bootstrap/scss/_functions.scss"',
+        '@import "~@/assets/scss/vendors/bootstrap-vue/_custom.scss"',
+        '@import "~bootstrap/scss/_variables.scss"',
+        '@import "~bootstrap/scss/_mixins.scss"',
+        '@import "~bootstrap-vue/src/_variables.scss"',
+      ]
+
+      //add custom variables
+      opts.css.loaderOptions = {
+        sass: {
+          additionalData: bootstrapVueVarImports.join('\n')
+        },
+        scss: {
+          additionalData: [...bootstrapVueVarImports, ''].join(';\n')
+        }
+      }
+
 }
