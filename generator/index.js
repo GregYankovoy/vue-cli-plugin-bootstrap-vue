@@ -44,17 +44,27 @@ module.exports = (api, opts, rootOpts) => {
 
       //Modify App.vue (import bootstrap styles)
       helpers.updateApp(src => {
-        let styleBlockIndex = src.findIndex(line => line.match(/^<style>/))
+        let styleBlockIndex = src.findIndex(line => line.match(/^<style/))
 
-        if(styleBlockIndex === -1){
+        if(styleBlockIndex === -1){ //no style block found
+          //create it with lang scss
           src.push(`<style lang="scss">`)
           src.push(`</style>`)
 
           styleBlockIndex = src.length - 2
         }
+        else{
+          //check if has the attr lang="scss"
+          if(!src[styleBlockIndex].includes('lang="scss')){
+            //if not, replace line with lang="scss"
+            src[styleBlockIndex] = '<style lang="scss">'
+          }
+        }
 
         const bootstrapImportString = `@import "~@/assets/scss/vendors/bootstrap-vue/index";`
         src.splice(styleBlockIndex + 1, 0, bootstrapImportString)
+
+        return src
       })
     }
     
