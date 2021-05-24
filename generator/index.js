@@ -3,12 +3,12 @@ module.exports = (api, opts, rootOpts) => {
 
   api.extendPackage({
     dependencies: {
-      'bootstrap-vue': '^2.17.3'
-    },
-    devDependencies: {
+      'bootstrap-vue': '^2.17.3',
       'bootstrap': '^4.5.2',
       'popper.js': '^1.16.1',
-      'portal-vue': '^2.1.7',
+      'portal-vue': '^2.1.7'
+    },
+    devDependencies: {
       'sass': '^1.26.11',
       'sass-loader': '^10.0.2',
     }
@@ -46,7 +46,7 @@ module.exports = (api, opts, rootOpts) => {
       helpers.updateApp(src => {
         let styleBlockIndex = src.findIndex(line => line.match(/^<style>/))
 
-        if(styleBlock === -1){
+        if(styleBlockIndex === -1){
           src.push(`<style lang="scss">`)
           src.push(`</style>`)
 
