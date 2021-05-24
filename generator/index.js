@@ -61,7 +61,7 @@ module.exports = (api, opts, rootOpts) => {
           }
         }
 
-        const bootstrapImportString = `@import "~@/assets/scss/vendors/bootstrap-vue/index";`
+        const bootstrapImportString = `@import "~@/assets/scss/vendors/bootstrap-vue/index";\n`
         src.splice(styleBlockIndex + 1, 0, bootstrapImportString)
 
         return src
