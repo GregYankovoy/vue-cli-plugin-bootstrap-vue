@@ -10,5 +10,12 @@ module.exports = [
     type: 'confirm',
     default: false,
     message: 'Use scss?'
+  },
+  {
+    when: answers => !!answers.useScss,
+    name: 'injectAbstracts',
+    type: 'confirm',
+    default: false,
+    message: 'Would you like to inject vars, functions and mixins in all SFC components?'
   }
 ]

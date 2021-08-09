@@ -1,3 +1,6 @@
+const { merge } = require('lodash/object')
+const bootstrapCssAbstractsImports = require('./bootstrapCssAbstractsImports')
+
 module.exports = (api, opts) => {
   // Resolve asset references from components
   api.chainWebpack(config => {
@@ -29,23 +32,17 @@ module.exports = (api, opts) => {
       })
   })
 
-  //Add bootstrap's variables globally
-      const bootstrapVueVarImports = [
-        '@import "~bootstrap/scss/_functions.scss"',
-        '@import "~@/assets/scss/vendors/bootstrap-vue/_custom.scss"',
-        '@import "~bootstrap/scss/_variables.scss"',
-        '@import "~bootstrap/scss/_mixins.scss"',
-        '@import "~bootstrap-vue/src/_variables.scss"',
-      ]
-
-      //add custom variables
-      opts.css.loaderOptions = {
+  //Add bootstrap's variables/functions/mixins globally
+  if(opts.useScss && opts.injectAbstracts){
+    merge(opts.css, {
+      loaderOptions:{
         sass: {
-          additionalData: bootstrapVueVarImports.join('\n')
+          additionalData: bootstrapCssAbstractsImports.join('\n')
         },
         scss: {
-          additionalData: [...bootstrapVueVarImports, ''].join(';\n')
+          additionalData: [...bootstrapCssAbstractsImports, ''].join(';\n')
         }
       }
-
+    })
+  }
 }
