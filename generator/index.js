@@ -31,18 +31,15 @@ module.exports = (api, opts, rootOpts) => {
   // adapted from https://github.com/Akryum/vue-cli-plugin-apollo/blob/master/generator/index.js#L68-L91
   api.onCreateComplete(() => {
     // Modify main.js
-    helpers.updateMain(src => {
-      const vueImportIndex = src.findIndex(line => line.match(/^import Vue/))
-
-      src.splice(vueImportIndex + 1, 0, 'import \'./plugins/bootstrap-vue\'')
-
-      return src
+    helpers.updateFile(api.resolve(api.entryFile), srcLines => {
+      const vueImportIndex = srcLines.findIndex(line => line.match(/^import Vue/))
+        srcLines.splice(vueImportIndex + 1, 0, 'import \'./plugins/bootstrap-vue\'')
     })
 
     if(opts.useScss){
       //Modify App.vue (import bootstrap styles)
-      helpers.updateApp(src => {
-        let styleBlockIndex = src.findIndex(line => line.match(/^<style/))
+      helpers.updateFile(api.resolve('./src/App.vue'), srcLines => {
+        let styleBlockIndex = srcLines.findIndex(line => line.match(/^<style/))
 
         if(styleBlockIndex === -1){ //no style block found
           //create it with lang scss
@@ -59,10 +56,8 @@ module.exports = (api, opts, rootOpts) => {
           }
         }
 
-        const bootstrapImportString = `@import "~@/assets/scss/vendors/bootstrap-vue/index";\n`
+        const bootstrapImportString = `@import "~@/assets/scss/vendors/bootstrap-vue/index";`
         src.splice(styleBlockIndex + 1, 0, bootstrapImportString)
-
-        return src
       })
     }
     
