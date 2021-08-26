@@ -1,6 +1,3 @@
-const { merge } = require('lodash/object')
-const bootstrapCssAbstractsImports = require('./bootstrapCssAbstractsImports')
-
 module.exports = (api, opts) => {
   // Resolve asset references from components
   api.chainWebpack(config => {
@@ -32,17 +29,4 @@ module.exports = (api, opts) => {
       })
   })
 
-  //Add bootstrap's variables/functions/mixins globally
-  if(opts.useScss && opts.injectAbstracts){
-    merge(opts.css, {
-      loaderOptions:{
-        sass: {
-          additionalData: bootstrapCssAbstractsImports.join('\n')
-        },
-        scss: {
-          additionalData: [...bootstrapCssAbstractsImports, ''].join(';\n')
-        }
-      }
-    })
-  }
 }
