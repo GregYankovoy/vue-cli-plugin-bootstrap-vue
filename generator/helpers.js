@@ -1,13 +1,8 @@
 const fs = require('fs')
+const path = require('path')
 
 module.exports = function (api) {
   return {
-    getMain() {
-      const tsPath = api.resolve('src/main.ts')
-
-      return fs.existsSync(tsPath) ? 'src/main.ts' : 'src/main.js'
-    },
-
     updateBabelConfig (callback) {
       let config, configPath
 
@@ -41,18 +36,14 @@ module.exports = function (api) {
     },
 
     updateMain (callback) {
-      const tsPath = api.resolve('./src/main.ts')
-      const jsPath = api.resolve('./src/main.js')
-
-      const mainPath = fs.existsSync(tsPath) ? tsPath : jsPath
-      let content = fs.readFileSync(mainPath, { encoding: 'utf8' })
+      let content = fs.readFileSync(api.resolve(api.entryFile), { encoding: 'utf8' })
 
       let lines = content.split(/\r?\n/g)
 
       lines = callback(lines)
 
       content = lines.join('\n')
-      fs.writeFileSync(mainPath, content, { encoding: 'utf8' })
+      fs.writeFileSync(api.resolve(api.entryFile), content, { encoding: 'utf8' })
     },
 
     //TODO: refactor since is equal to updateMain

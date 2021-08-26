@@ -40,8 +40,6 @@ module.exports = (api, opts, rootOpts) => {
     })
 
     if(opts.useScss){
-      
-
       //Modify App.vue (import bootstrap styles)
       helpers.updateApp(src => {
         let styleBlockIndex = src.findIndex(line => line.match(/^<style/))
