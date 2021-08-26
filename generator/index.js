@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 module.exports = (api, opts, rootOpts) => {
   const helpers = require('./helpers')(api)
 
@@ -43,22 +45,52 @@ module.exports = (api, opts, rootOpts) => {
 
         if(styleBlockIndex === -1){ //no style block found
           //create it with lang scss
-          src.push(`<style lang="scss">`)
-          src.push(`</style>`)
+          srcLines.push(`<style lang="scss">`)
+          srcLines.push(`</style>`)
 
-          styleBlockIndex = src.length - 2
+          styleBlockIndex = srcLines.length - 2
         }
         else{
           //check if has the attr lang="scss"
-          if(!src[styleBlockIndex].includes('lang="scss')){
+          if(!srcLines[styleBlockIndex].includes('lang="scss')){
             //if not, replace line with lang="scss"
-            src[styleBlockIndex] = '<style lang="scss">'
+            srcLines[styleBlockIndex] = '<style lang="scss">'
           }
         }
 
         const bootstrapImportString = `@import "~@/assets/scss/vendors/bootstrap-vue/index";`
-        src.splice(styleBlockIndex + 1, 0, bootstrapImportString)
+        srcLines.splice(styleBlockIndex + 1, 0, bootstrapImportString)
       })
+
+      if(opts.injectAbstracts){
+        //create/modify vue.config.js
+        const vueConfigPath = api.resolve('./vue.config.js')
+        if(!fs.existsSync(vueConfigPath)){
+          const content = `module.exports = {\n}`
+          fs.writeFileSync(vueConfigPath, content, { encoding: 'utf-8' })
+        }
+
+        helpers.updateFile(vueConfigPath, srcLines => {
+          let index = 0
+          srcLines.splice(index, 0, `const bootstrapSassAbstractsImports = require('vue-cli-plugin-bootstrap-vue/sassAbstractsImports.js')`)
+          
+          const bootstrapAbstractsContentLines = [
+            "\tcss: {",
+            "\t\tloaderOptions: {",
+            "\t\t\tsass: {",
+            "\t\t\t\tadditionalData: bootstrapSassAbstractsImports.join('\\n')",
+            "\t\t\t},",
+            "\t\t\tscss: {",
+            "\t\t\t\tadditionalData: [...bootstrapSassAbstractsImports, ''].join(';\\n')",
+            "\t\t\t}",
+            "\t\t}",
+            '\t}'
+          ]
+          index = srcLines.length - 1
+          srcLines.splice(index, 0, bootstrapAbstractsContentLines.join('\n'))
+
+        })
+      }
     }
     
 
