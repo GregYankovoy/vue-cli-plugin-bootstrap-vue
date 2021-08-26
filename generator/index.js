@@ -86,14 +86,13 @@ module.exports = (api, opts, rootOpts) => {
         return cfg
       })
 
-      helpers.updateMain(src => {
-        if (!src.find(l => l.match(/^(import|require).+mutationobserver-shim.*$/))) {
-          src.unshift('import \'mutationobserver-shim\'')
+      helpers.updateFile(api.resolve(api.entryFile), srcLines => {
+        if (!srcLines.find(line => line.match(/^(import|require).+mutationobserver-shim.*$/))) {
+          srcLines.unshift('import \'mutationobserver-shim\'')
         }
-        if (!src.find(l => l.match(/^(import|require).+@babel\/polyfill.*$/))) {
-          src.unshift('import \'@babel/polyfill\'')
+        if (!srcLines.find(line => line.match(/^(import|require).+@babel\/polyfill.*$/))) {
+          srcLines.unshift('import \'@babel/polyfill\'')
         }
-        return src
       })
     }
   })
