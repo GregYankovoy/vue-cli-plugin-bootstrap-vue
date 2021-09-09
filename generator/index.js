@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 module.exports = (api, opts, rootOpts) => {
   const helpers = require('./helpers')(api)
 
@@ -31,41 +33,64 @@ module.exports = (api, opts, rootOpts) => {
   // adapted from https://github.com/Akryum/vue-cli-plugin-apollo/blob/master/generator/index.js#L68-L91
   api.onCreateComplete(() => {
     // Modify main.js
-    helpers.updateMain(src => {
-      const vueImportIndex = src.findIndex(line => line.match(/^import Vue/))
-
-      src.splice(vueImportIndex + 1, 0, 'import \'./plugins/bootstrap-vue\'')
-
-      return src
+    helpers.updateFile(api.resolve(api.entryFile), srcLines => {
+      const vueImportIndex = srcLines.findIndex(line => line.match(/^import Vue/))
+        srcLines.splice(vueImportIndex + 1, 0, 'import \'./plugins/bootstrap-vue\'')
     })
 
     if(opts.useScss){
-      
-
       //Modify App.vue (import bootstrap styles)
-      helpers.updateApp(src => {
-        let styleBlockIndex = src.findIndex(line => line.match(/^<style/))
+      helpers.updateFile(api.resolve('./src/App.vue'), srcLines => {
+        let styleBlockIndex = srcLines.findIndex(line => line.match(/^<style/))
 
         if(styleBlockIndex === -1){ //no style block found
           //create it with lang scss
-          src.push(`<style lang="scss">`)
-          src.push(`</style>`)
+          srcLines.push(`<style lang="scss">`)
+          srcLines.push(`</style>`)
 
-          styleBlockIndex = src.length - 2
+          styleBlockIndex = srcLines.length - 2
         }
         else{
           //check if has the attr lang="scss"
-          if(!src[styleBlockIndex].includes('lang="scss')){
+          if(!srcLines[styleBlockIndex].includes('lang="scss')){
             //if not, replace line with lang="scss"
-            src[styleBlockIndex] = '<style lang="scss">'
+            srcLines[styleBlockIndex] = '<style lang="scss">'
           }
         }
 
-        const bootstrapImportString = `@import "~@/assets/scss/vendors/bootstrap-vue/index";\n`
-        src.splice(styleBlockIndex + 1, 0, bootstrapImportString)
-
-        return src
+        const bootstrapImportString = `@import "~@/assets/scss/vendors/bootstrap-vue/index";`
+        srcLines.splice(styleBlockIndex + 1, 0, bootstrapImportString)
       })
+
+      if(opts.injectAbstracts){
+        //create/modify vue.config.js
+        const vueConfigPath = api.resolve('./vue.config.js')
+        if(!fs.existsSync(vueConfigPath)){
+          const content = `module.exports = {\n}`
+          fs.writeFileSync(vueConfigPath, content, { encoding: 'utf-8' })
+        }
+
+        helpers.updateFile(vueConfigPath, srcLines => {
+          let index = 0
+          srcLines.splice(index, 0, `const bootstrapSassAbstractsImports = require('vue-cli-plugin-bootstrap-vue/sassAbstractsImports.js')`)
+          
+          const bootstrapAbstractsContentLines = [
+            "\tcss: {",
+            "\t\tloaderOptions: {",
+            "\t\t\tsass: {",
+            "\t\t\t\tadditionalData: bootstrapSassAbstractsImports.join('\\n')",
+            "\t\t\t},",
+            "\t\t\tscss: {",
+            "\t\t\t\tadditionalData: [...bootstrapSassAbstractsImports, ''].join(';\\n')",
+            "\t\t\t}",
+            "\t\t}",
+            '\t}'
+          ]
+          index = srcLines.length - 1
+          srcLines.splice(index, 0, bootstrapAbstractsContentLines.join('\n'))
+
+        })
+      }
     }
     
 
@@ -93,14 +118,13 @@ module.exports = (api, opts, rootOpts) => {
         return cfg
       })
 
-      helpers.updateMain(src => {
-        if (!src.find(l => l.match(/^(import|require).+mutationobserver-shim.*$/))) {
-          src.unshift('import \'mutationobserver-shim\'')
+      helpers.updateFile(api.resolve(api.entryFile), srcLines => {
+        if (!srcLines.find(line => line.match(/^(import|require).+mutationobserver-shim.*$/))) {
+          srcLines.unshift('import \'mutationobserver-shim\'')
         }
-        if (!src.find(l => l.match(/^(import|require).+@babel\/polyfill.*$/))) {
-          src.unshift('import \'@babel/polyfill\'')
+        if (!srcLines.find(line => line.match(/^(import|require).+@babel\/polyfill.*$/))) {
+          srcLines.unshift('import \'@babel/polyfill\'')
         }
-        return src
       })
     }
   })

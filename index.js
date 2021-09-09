@@ -32,17 +32,4 @@ module.exports = (api, opts) => {
       })
   })
 
-  //Add bootstrap's variables/functions/mixins globally
-  if(opts.useScss && opts.injectAbstracts){
-    merge(opts.css, {
-      loaderOptions:{
-        sass: {
-          additionalData: bootstrapCssAbstractsImports.join('\n')
-        },
-        scss: {
-          additionalData: [...bootstrapCssAbstractsImports, ''].join(';\n')
-        }
-      }
-    })
-  }
 }
