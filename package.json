@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-bootstrap-vue",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "vue-cli plugin to add Bootstrap-Vue",
   "main": "index.js",
   "scripts": {
